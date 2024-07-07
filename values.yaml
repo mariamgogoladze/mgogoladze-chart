@@ -1,0 +1,54 @@
+labels:
+  app: mgogoladze-app
+  environment: studing
+
+namespace:
+  create: true
+  name: mgogoladze
+  annotations:
+    description: "Namespace for mgogoladzes application"
+    contact: "mgogoladze@gmail.com"
+
+deployment:
+  name: web-server-mgogoladze
+  replicaCount: 1
+  image:
+    repository: nginx
+    tag: latest
+  containername: nginx
+  containerPort: 80
+
+configmap:
+  create: true
+  name: index-html-configmap
+  data:
+    index.html: |-
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Sample HTML Page</title>
+      </head>
+      <body>
+        <h1>Hello, World!</h1>
+        <p>This is a sample HTML page embedded in a ConfigMap using Helm and values.yaml.</p>
+      </body>
+      </html>
+
+serviceAccount:
+  enabled: true
+  name: mgogoladze
+role:
+  name: mgogoladze-role
+roleBinding:
+  name: mgogoladze-role-binding
+
+service:
+  name: mgogoladze-service
+  type: ClusterIP
+  port: 80
+  
+virtualService:
+  name: mgogoladze-virtual-service
+  ingressGatewayName: istio-system/academy-ingress-gateway
+  host: mgogoladze.com
